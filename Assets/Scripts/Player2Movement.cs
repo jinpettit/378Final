@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player1Movement : MonoBehaviour
+public class Player2Movement : MonoBehaviour
 {
-    [SerializeField] public Player1Controller controller;
+    [SerializeField] public Player2Controller controller;
     [SerializeField] Animator animator;
     public float moveSpeed = 40f;
     float horizontalMove = 0f;
@@ -13,11 +13,11 @@ public class Player1Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        horizontalMove = Input.GetAxisRaw("Horizontal") * moveSpeed;
+        horizontalMove = Input.GetAxisRaw("HorizontalP2") * moveSpeed;
 
         bool isMoving = !Mathf.Approximately(horizontalMove, 0f);
 
-        animator.SetBool("isWalking", isMoving);
+        animator.SetBool("isMoving", isMoving);
     }
 
     void FixedUpdate(){

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player1Controller : MonoBehaviour
+public class Player2Controller : MonoBehaviour
 {
     [SerializeField] Rigidbody2D body;
     [SerializeField] Animator animator;
@@ -12,22 +12,21 @@ public class Player1Controller : MonoBehaviour
     public float attackRangeY = 1f;
     private Vector2 attackSize;
     public LayerMask opponentLayers;
-    public int health = 100;
-
     private Vector3 vel = Vector3.zero;
     private bool attacking = false;
-    public bool blocking = false;
 
     float attackRate = 0.6f;
     float attackTimer = 0f;
+    public int health = 100;
 
+    public bool blocking = false;
     float blockRate = 0.6f;
     float blockTimer = 0f;
 
     public void Move(float move){
-        if (!attacking){ //don't want players to be able to move and attack at the same time 
+        if (!attacking){ //don't want players to be able to move and attack at the same time
             Vector3 targetVelocity = new Vector2(move * 10f, body.velocity.y);
-            body.velocity = Vector3.SmoothDamp(body.velocity, targetVelocity, ref vel, movementSmoothing); 
+            body.velocity = Vector3.SmoothDamp(body.velocity, targetVelocity, ref vel, movementSmoothing);
         }
     }
 
@@ -38,11 +37,10 @@ public class Player1Controller : MonoBehaviour
             Collider2D[] targets = Physics2D.OverlapBoxAll(hitbox.position, attackSize, 0, opponentLayers);
             foreach (Collider2D target in targets){
                 Debug.Log("hit");
-                if(target.GetComponent<Player2Controller>().blocking == false){
-                    target.GetComponent<Player2Controller>().health -= 30;
-                    Debug.Log(target.GetComponent<Player2Controller>().health);
+                if(target.GetComponent<Player1Controller>().blocking == false){
+                    target.GetComponent<Player1Controller>().health -= 30;
+                    Debug.Log(target.GetComponent<Player1Controller>().health);
                 }
-
             }
         }
         
@@ -64,15 +62,13 @@ public class Player1Controller : MonoBehaviour
     {   
         if (health <= 0){
             animator.Play("Death");
-
-            // add transtions to end screen
         }
-
-        if (Input.GetKeyDown(KeyCode.Space)){
+        
+        if (Input.GetKeyDown(KeyCode.RightShift)){
             Attack();
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift)){
+        if (Input.GetKeyDown(KeyCode.RightControl)){
             Block();
         }
 

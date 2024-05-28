@@ -202,7 +202,7 @@ Transform:
   m_GameObject: {fileID: 1188729655}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0533, y: -4.7496, z: 0}
+  m_LocalPosition: {x: 0.25, y: -4.25, z: 0}
   m_LocalScale: {x: 22.1865, y: 1.4817188, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -266,6 +266,8 @@ GameObject:
   - component: {fileID: 1733713973}
   - component: {fileID: 1733713977}
   - component: {fileID: 1733713976}
+  - component: {fileID: 1733713979}
+  - component: {fileID: 1733713978}
   m_Layer: 7
   m_Name: Player_2
   m_TagString: Untagged
@@ -355,10 +357,11 @@ Transform:
   m_GameObject: {fileID: 1733713972}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.679144, y: -4.03, z: 0}
+  m_LocalPosition: {x: 5.68, y: -3.47, z: 0}
   m_LocalScale: {x: -2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2080843597}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &1733713976
@@ -433,6 +436,44 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.80954206, y: 1.2312855}
   m_EdgeRadius: 0
+--- !u!114 &1733713978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733713972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a55d8f6df5b3f124aba8df51bc21c1c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 1733713979}
+  animator: {fileID: 1733713973}
+  moveSpeed: 40
+--- !u!114 &1733713979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733713972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c494b48c43b0e041a5d90231288ddb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 1733713976}
+  animator: {fileID: 1733713973}
+  movementSmoothing: 0.05
+  hitbox: {fileID: 2080843597}
+  attackRangeX: 2.4
+  attackRangeY: 2
+  opponentLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  health: 100
+  blocking: 0
 --- !u!1 &1825481151
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,7 +623,7 @@ Transform:
   m_GameObject: {fileID: 1825481151}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.8806, y: -3.99, z: 0}
+  m_LocalPosition: {x: -4.82, y: -3.57, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -637,6 +678,8 @@ MonoBehaviour:
   opponentLayers:
     serializedVersion: 2
     m_Bits: 128
+  health: 100
+  blocking: 0
 --- !u!114 &1825481158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -650,6 +693,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 1825481157}
+  animator: {fileID: 1825481153}
   moveSpeed: 35
 --- !u!1 &1967985151
 GameObject:
@@ -681,6 +725,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1825481155}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2080843596
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2080843597}
+  m_Layer: 0
+  m_Name: hitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2080843597
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2080843596}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.87, y: 0.61, z: 0}
+  m_LocalScale: {x: 1.0265, y: 1.0265, z: 1.0265}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1733713975}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2102658684
 GameObject:
