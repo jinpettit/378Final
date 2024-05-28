@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player2Controller : MonoBehaviour
 {
     [SerializeField] Rigidbody2D body;
-    [SerializeField] Animator animator;
+    [SerializeField] public Animator animator;
     [Range(0, .3f)] [SerializeField] private float movementSmoothing = .05f;
     public Transform hitbox;
     public float attackRangeX = 1f;
@@ -28,6 +28,7 @@ public class Player2Controller : MonoBehaviour
             Vector3 targetVelocity = new Vector2(move * 10f, body.velocity.y);
             body.velocity = Vector3.SmoothDamp(body.velocity, targetVelocity, ref vel, movementSmoothing);
         }
+        
     }
 
     public void Attack(){
@@ -39,6 +40,7 @@ public class Player2Controller : MonoBehaviour
                 Debug.Log("hit");
                 if(target.GetComponent<Player1Controller>().blocking == false){
                     target.GetComponent<Player1Controller>().health -= 30;
+                    target.GetComponent<Player1Controller>().animator.SetTrigger("Hit");
                     Debug.Log(target.GetComponent<Player1Controller>().health);
                 }
             }
@@ -62,6 +64,7 @@ public class Player2Controller : MonoBehaviour
     {   
         if (health <= 0){
             animator.Play("Death");
+            Destroy(gameObject, 1f);
         }
         
         if (Input.GetKeyDown(KeyCode.RightShift)){
