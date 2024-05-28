@@ -17,7 +17,7 @@ public class Player2Movement : MonoBehaviour
 
         bool isMoving = !Mathf.Approximately(horizontalMove, 0f);
 
-        animator.SetBool("isMoving", isMoving);
+        animator.SetBool("isWalking", isMoving);
     }
 
     void FixedUpdate(){
