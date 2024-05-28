@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player1Controller : MonoBehaviour
 {
     [SerializeField] Rigidbody2D body;
-    [SerializeField] Animator animator;
+    [SerializeField] public Animator animator;
     [Range(0, .3f)] [SerializeField] private float movementSmoothing = .05f;
     public Transform hitbox;
     public float attackRangeX = 1f;
@@ -40,6 +40,7 @@ public class Player1Controller : MonoBehaviour
                 Debug.Log("hit");
                 if(target.GetComponent<Player2Controller>().blocking == false){
                     target.GetComponent<Player2Controller>().health -= 30;
+                    target.GetComponent<Player2Controller>().animator.SetTrigger("Hit");
                     Debug.Log(target.GetComponent<Player2Controller>().health);
                 }
 
@@ -64,7 +65,7 @@ public class Player1Controller : MonoBehaviour
     {   
         if (health <= 0){
             animator.Play("Death");
-
+            Destroy(gameObject, 1f);
             // add transtions to end screen
         }
 
