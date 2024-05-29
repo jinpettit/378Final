@@ -25,14 +25,6 @@ public class Player2Controller : MonoBehaviour
     float blockRate = 0.6f;
     float blockTimer = 0f;
 
-    //Audio
-    AudioManager audioManager;
-
-    private void Awake()
-    {
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
-    }
-
     public void Move(float move)
     {
         if (isDead)
@@ -60,7 +52,6 @@ public class Player2Controller : MonoBehaviour
         {
             attacking = true;
             animator.SetTrigger("Attack");
-            audioManager.PlaySFX(audioManager.swing);
             Collider2D[] targets = Physics2D.OverlapBoxAll(hitbox.position, attackSize, 0, opponentLayers);
             foreach (Collider2D target in targets)
             {
@@ -70,11 +61,6 @@ public class Player2Controller : MonoBehaviour
                     target.GetComponent<Player1Controller>().health -= 30;
                     target.GetComponent<Player1Controller>().animator.SetTrigger("Hit");
                     Debug.Log(target.GetComponent<Player1Controller>().health);
-                   audioManager.PlaySFX(audioManager.hit);
-                }
-                else
-                {
-                    audioManager.PlaySFX(audioManager.contact);
                 }
             }
         }
@@ -91,7 +77,6 @@ public class Player2Controller : MonoBehaviour
         {
             blocking = true;
             animator.SetTrigger("Block");
-            audioManager.PlaySFX(audioManager.block);
         }
     }
 
