@@ -1,13 +1,12 @@
+Milestone 3
+
 To Do:
-Health Bars,
-SFX,
-Background,
-Change Blocking Mechanism,
-Stop Walking while attacking and blocking
+Fix control scheme
+Add different attack
+Background music
+Jump and flip
+Rounds
 
 Future To Do:
-More attacks,
 shield health,
-Parry/counter,
-AI(maybe),
-More Characters
+Parry/counter
