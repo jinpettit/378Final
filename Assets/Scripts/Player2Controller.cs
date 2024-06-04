@@ -25,6 +25,10 @@ public class Player2Controller : MonoBehaviour
     float blockRate = 0.6f;
     float blockTimer = 0f;
 
+    private float jumpingPower = 16f;
+    private bool isFacingLeft = true;
+    private bool isGrounded = true;
+
     //Audio
     AudioManager audioManager;
 
@@ -32,6 +36,26 @@ public class Player2Controller : MonoBehaviour
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
+
+    private void Flip()
+    {
+        if(isDead)
+        {
+            return;
+        }
+
+        if (GameObject.FindGameObjectWithTag("Player1").GetComponent<Player1Controller>().transform.position.x > transform.position.x && isFacingLeft 
+            || GameObject.FindGameObjectWithTag("Player1").GetComponent<Player1Controller>().transform.position.x < transform.position.x && !isFacingLeft){
+                
+            isFacingLeft = !isFacingLeft;
+            Vector3 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
+        }
+        
+        
+    }
+
 
     public void Move(float move)
     {
@@ -95,6 +119,18 @@ public class Player2Controller : MonoBehaviour
         }
     }
 
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Floor"))
+        {
+            Vector3 normal = other.GetContact(0).normal;
+            if (normal == Vector3.up)
+            {
+                isGrounded = true;
+            }
+        }
+    }
+
     void Start()
     {
         attackSize = new Vector2(attackRangeX, attackRangeY);
@@ -120,6 +156,19 @@ public class Player2Controller : MonoBehaviour
             animator.Play("Death");
             isDead = true;
             StartCoroutine(HandleDeath());
+        }
+
+        if (Input.GetButtonDown("Jump2") && isGrounded == true)
+        { 
+            animator.SetTrigger("Jump");
+            body.velocity = new Vector2(body.velocity.x, jumpingPower);
+            isGrounded = false;
+        }
+
+        if (Input.GetButtonUp("Jump2"))
+        {
+            body.velocity = new Vector2(body.velocity.x, body.velocity.y * 0.5f);
+            
         }
 
         if (Input.GetKeyDown(KeyCode.RightShift))
@@ -152,7 +201,11 @@ public class Player2Controller : MonoBehaviour
                 blocking = false;
             }
         }
+
+        Flip();
     }
+
+    
 
     void OnDrawGizmosSelected()
     {
