@@ -73,6 +73,27 @@ public class Player1Controller : MonoBehaviour
         }
     }
 
+    public void ShowHitbox()
+    {
+        Collider2D[] targets = Physics2D.OverlapBoxAll(hitbox.position, attackSize, 0, opponentLayers);
+        foreach (Collider2D target in targets)
+        {
+            Debug.Log("hit");
+            if (target.GetComponent<Player2Controller>().blocking == false)
+            {
+                target.GetComponent<Player2Controller>().health -= 30;
+                target.GetComponent<Player2Controller>().animator.SetTrigger("Hit");
+                Debug.Log(target.GetComponent<Player2Controller>().health);
+                audioManager.PlaySFX(audioManager.hit);
+            }
+            else
+            {
+                audioManager.PlaySFX(audioManager.contact);
+            }
+
+        }
+    }
+
     public void Attack()
     {
         if (isDead)
@@ -84,23 +105,8 @@ public class Player1Controller : MonoBehaviour
             attacking = true;
             animator.SetTrigger("Attack");
             audioManager.PlaySFX(audioManager.swing);
-            Collider2D[] targets = Physics2D.OverlapBoxAll(hitbox.position, attackSize, 0, opponentLayers);
-            foreach (Collider2D target in targets)
-            {
-                Debug.Log("hit");
-                if (target.GetComponent<Player2Controller>().blocking == false)
-                {
-                    target.GetComponent<Player2Controller>().health -= 30;
-                    target.GetComponent<Player2Controller>().animator.SetTrigger("Hit");
-                    Debug.Log(target.GetComponent<Player2Controller>().health);
-                    audioManager.PlaySFX(audioManager.hit);
-                }
-                else
-                {
-                    audioManager.PlaySFX(audioManager.contact);
-                }
+            // Hitbox trigger now set by the animation
 
-            }
         }
 
     }
