@@ -19,8 +19,8 @@ public class Player1Controller : MonoBehaviour
     private bool attacking = false;
     public bool blocking = false;
     private bool isDead;
-    float attackRate = 0.6f;
-    float attackTimer = 0f;
+    //float attackRate = 0.6f;
+    //float attackTimer = 0f;
 
     float blockRate = 0.6f;
     float blockTimer = 0f;
@@ -81,7 +81,7 @@ public class Player1Controller : MonoBehaviour
             Debug.Log("hit");
             if (target.GetComponent<Player2Controller>().blocking == false)
             {
-                target.GetComponent<Player2Controller>().health -= 30;
+                target.GetComponent<Player2Controller>().health -= 20;
                 target.GetComponent<Player2Controller>().animator.SetTrigger("Hit");
                 Debug.Log(target.GetComponent<Player2Controller>().health);
                 audioManager.PlaySFX(audioManager.hit);
@@ -92,6 +92,32 @@ public class Player1Controller : MonoBehaviour
             }
 
         }
+    }
+
+    public void ShowHeavy()
+    {
+        Collider2D[] targets = Physics2D.OverlapBoxAll(hitbox.position, attackSize, 0, opponentLayers);
+        foreach (Collider2D target in targets)
+        {
+            Debug.Log("hit");
+            if (target.GetComponent<Player2Controller>().blocking == false)
+            {
+                target.GetComponent<Player2Controller>().health -= 40;
+                target.GetComponent<Player2Controller>().animator.SetTrigger("Hit");
+                Debug.Log(target.GetComponent<Player2Controller>().health);
+                audioManager.PlaySFX(audioManager.hit);
+            }
+            else
+            {
+                audioManager.PlaySFX(audioManager.contact);
+            }
+
+        }
+    }
+
+    public void MakeActionable(){
+        //attackTimer = 0;
+        attacking = false;
     }
 
     public void Attack()
@@ -109,6 +135,20 @@ public class Player1Controller : MonoBehaviour
 
         }
 
+    }
+
+    public void Heavy()
+    {
+        if (isDead)
+        {
+            return;
+        }
+        if (!attacking)
+        {
+            attacking = true;
+            animator.SetTrigger("Heavy");
+            audioManager.PlaySFX(audioManager.swing);
+        }
     }
 
     public void Block()
@@ -182,21 +222,25 @@ public class Player1Controller : MonoBehaviour
             Attack();
         }
 
+        if (Input.GetKeyDown(KeyCode.F)){
+            Heavy();
+        }
+
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             Block();
         }
 
-        if (attacking)
-        { //artificial cooldown for the attack animation
-            attackTimer += Time.deltaTime;
-            if (attackTimer >= attackRate)
-            {
-                attackTimer = 0;
-                attacking = false;
+        // if (attacking)
+        // { //artificial cooldown for the attack animation
+        //     attackTimer += Time.deltaTime;
+        //     if (attackTimer >= attackRate)
+        //     {
+        //         attackTimer = 0;
+        //         attacking = false;
 
-            }
-        }
+        //     }
+        // }
 
         if (blocking)
         { //block cooldown
