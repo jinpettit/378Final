@@ -39,21 +39,22 @@ public class Player1Controller : MonoBehaviour
 
     private void Flip()
     {
-        if(isDead)
+        if (isDead)
         {
             return;
         }
 
-        if (GameObject.FindGameObjectWithTag("Player2").GetComponent<Player2Controller>().transform.position.x < transform.position.x && isFacingRight 
-            || GameObject.FindGameObjectWithTag("Player2").GetComponent<Player2Controller>().transform.position.x > transform.position.x && !isFacingRight){
-                
+        if (GameObject.FindGameObjectWithTag("Player2").GetComponent<Player2Controller>().transform.position.x < transform.position.x && isFacingRight
+            || GameObject.FindGameObjectWithTag("Player2").GetComponent<Player2Controller>().transform.position.x > transform.position.x && !isFacingRight)
+        {
+
             isFacingRight = !isFacingRight;
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
         }
-        
-        
+
+
     }
 
     public void Move(float move)
@@ -115,7 +116,8 @@ public class Player1Controller : MonoBehaviour
         }
     }
 
-    public void MakeActionable(){
+    public void MakeActionable()
+    {
         //attackTimer = 0;
         attacking = false;
     }
@@ -199,13 +201,14 @@ public class Player1Controller : MonoBehaviour
         }
         if (health <= 0)
         {
-            animator.Play("Death");
+            animator.ResetTrigger("Hit");
+            animator.SetTrigger("Death");
             isDead = true;
             StartCoroutine(HandleDeath());
         }
 
         if (Input.GetButtonDown("Jump") && isGrounded == true)
-        { 
+        {
             animator.SetTrigger("Jump");
             body.velocity = new Vector2(body.velocity.x, jumpingPower);
             isGrounded = false;
@@ -214,7 +217,7 @@ public class Player1Controller : MonoBehaviour
         if (Input.GetButtonUp("Jump"))
         {
             body.velocity = new Vector2(body.velocity.x, body.velocity.y * 0.5f);
-            
+
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -222,7 +225,8 @@ public class Player1Controller : MonoBehaviour
             Attack();
         }
 
-        if (Input.GetKeyDown(KeyCode.F)){
+        if (Input.GetKeyDown(KeyCode.F))
+        {
             Heavy();
         }
 
@@ -253,7 +257,7 @@ public class Player1Controller : MonoBehaviour
         }
 
         Flip();
-        
+
     }
 
     void OnDrawGizmosSelected()

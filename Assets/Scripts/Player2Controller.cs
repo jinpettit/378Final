@@ -39,21 +39,22 @@ public class Player2Controller : MonoBehaviour
 
     private void Flip()
     {
-        if(isDead)
+        if (isDead)
         {
             return;
         }
 
-        if (GameObject.FindGameObjectWithTag("Player1").GetComponent<Player1Controller>().transform.position.x > transform.position.x && isFacingLeft 
-            || GameObject.FindGameObjectWithTag("Player1").GetComponent<Player1Controller>().transform.position.x < transform.position.x && !isFacingLeft){
-                
+        if (GameObject.FindGameObjectWithTag("Player1").GetComponent<Player1Controller>().transform.position.x > transform.position.x && isFacingLeft
+            || GameObject.FindGameObjectWithTag("Player1").GetComponent<Player1Controller>().transform.position.x < transform.position.x && !isFacingLeft)
+        {
+
             isFacingLeft = !isFacingLeft;
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
         }
-        
-        
+
+
     }
 
 
@@ -115,7 +116,8 @@ public class Player2Controller : MonoBehaviour
         }
     }
 
-    public void MakeActionable(){
+    public void MakeActionable()
+    {
         //attackTimer = 0;
         attacking = false;
     }
@@ -199,13 +201,14 @@ public class Player2Controller : MonoBehaviour
         }
         if (health <= 0)
         {
+            animator.ResetTrigger("Hit");
             animator.Play("Death");
             isDead = true;
             StartCoroutine(HandleDeath());
         }
 
         if (Input.GetButtonDown("Jump2") && isGrounded == true)
-        { 
+        {
             animator.SetTrigger("Jump");
             body.velocity = new Vector2(body.velocity.x, jumpingPower);
             isGrounded = false;
@@ -214,7 +217,7 @@ public class Player2Controller : MonoBehaviour
         if (Input.GetButtonUp("Jump2"))
         {
             body.velocity = new Vector2(body.velocity.x, body.velocity.y * 0.5f);
-            
+
         }
 
         if (Input.GetKeyDown(KeyCode.RightShift))
@@ -256,7 +259,7 @@ public class Player2Controller : MonoBehaviour
         Flip();
     }
 
-    
+
 
     void OnDrawGizmosSelected()
     {
