@@ -39,23 +39,20 @@ public class Player2Controller : MonoBehaviour
 
     private void Flip()
     {
-        if(isDead)
+        if (isDead)
         {
             return;
         }
 
-        if (GameObject.FindGameObjectWithTag("Player1").GetComponent<Player1Controller>().transform.position.x > transform.position.x && isFacingLeft 
-            || GameObject.FindGameObjectWithTag("Player1").GetComponent<Player1Controller>().transform.position.x < transform.position.x && !isFacingLeft){
-                
+        if (GameObject.FindGameObjectWithTag("Player1").GetComponent<Player1Controller>().transform.position.x > transform.position.x && isFacingLeft
+            || GameObject.FindGameObjectWithTag("Player1").GetComponent<Player1Controller>().transform.position.x < transform.position.x && !isFacingLeft)
+        {
             isFacingLeft = !isFacingLeft;
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
         }
-        
-        
     }
-
 
     public void Move(float move)
     {
@@ -64,13 +61,13 @@ public class Player2Controller : MonoBehaviour
             return;
         }
         if (!attacking && !blocking)
-        { //don't want players to be able to move and attack at the same time
+        {
             Vector3 targetVelocity = new Vector2(move * 10f, body.velocity.y);
             body.velocity = Vector3.SmoothDamp(body.velocity, targetVelocity, ref vel, movementSmoothing);
         }
         else
         {
-            body.velocity = Vector2.zero;
+            body.velocity = new Vector2(0, body.velocity.y);
         }
     }
 
@@ -105,9 +102,7 @@ public class Player2Controller : MonoBehaviour
             attacking = true;
             animator.SetTrigger("Attack");
             audioManager.PlaySFX(audioManager.swing);
-            // Hitbox trigger now set by animation
         }
-
     }
 
     public void Block()
@@ -148,8 +143,6 @@ public class Player2Controller : MonoBehaviour
         Destroy(gameObject);
     }
 
-
-    // Update is called once per frame
     void Update()
     {
         if (isDead)
@@ -164,7 +157,7 @@ public class Player2Controller : MonoBehaviour
         }
 
         if (Input.GetButtonDown("Jump2") && isGrounded == true)
-        { 
+        {
             animator.SetTrigger("Jump");
             body.velocity = new Vector2(body.velocity.x, jumpingPower);
             isGrounded = false;
@@ -173,7 +166,6 @@ public class Player2Controller : MonoBehaviour
         if (Input.GetButtonUp("Jump2"))
         {
             body.velocity = new Vector2(body.velocity.x, body.velocity.y * 0.5f);
-            
         }
 
         if (Input.GetKeyDown(KeyCode.RightShift))
@@ -187,18 +179,17 @@ public class Player2Controller : MonoBehaviour
         }
 
         if (attacking)
-        { //artificial cooldown for the attack animation
+        {
             attackTimer += Time.deltaTime;
             if (attackTimer >= attackRate)
             {
                 attackTimer = 0;
                 attacking = false;
-
             }
         }
 
         if (blocking)
-        { //block cooldown
+        {
             blockTimer += Time.deltaTime;
             if (blockTimer >= blockRate)
             {
@@ -209,8 +200,6 @@ public class Player2Controller : MonoBehaviour
 
         Flip();
     }
-
-    
 
     void OnDrawGizmosSelected()
     {
