@@ -71,7 +71,7 @@ public class Player2Controller : MonoBehaviour
         }
         else
         {
-            body.velocity = Vector2.zero;
+            body.velocity = new Vector2(0, body.velocity.y);
         }
     }
 
@@ -135,7 +135,6 @@ public class Player2Controller : MonoBehaviour
             audioManager.PlaySFX(audioManager.swing);
             // Hitbox trigger now set by animation
         }
-
     }
 
     public void Heavy()

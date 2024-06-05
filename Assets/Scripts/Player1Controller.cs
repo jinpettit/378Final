@@ -70,7 +70,7 @@ public class Player1Controller : MonoBehaviour
         }
         else
         {
-            body.velocity = Vector2.zero;
+            body.velocity = new Vector2(0, body.velocity.y);
         }
     }
 
