@@ -206,32 +206,34 @@ public class Player2Controller : MonoBehaviour
             StartCoroutine(HandleDeath());
         }
 
-        if (Input.GetButtonDown("Jump2") && isGrounded == true)
-        {
-            animator.SetTrigger("Jump");
-            body.velocity = new Vector2(body.velocity.x, jumpingPower);
-            isGrounded = false;
-        }
+        if (!attacking && !blocking){
+            if (Input.GetButtonDown("Jump2") && isGrounded == true)
+            {
+                animator.SetTrigger("Jump");
+                body.velocity = new Vector2(body.velocity.x, jumpingPower);
+                isGrounded = false;
+            }
 
-        if (Input.GetButtonUp("Jump2"))
-        {
-            body.velocity = new Vector2(body.velocity.x, body.velocity.y * 0.5f);
+            if (Input.GetButtonUp("Jump2"))
+            {
+                body.velocity = new Vector2(body.velocity.x, body.velocity.y * 0.5f);
 
-        }
+            }
 
-        if (Input.GetKeyDown(KeyCode.RightShift))
-        {
-            Attack();
-        }
+            if (Input.GetKeyDown(KeyCode.RightShift))
+            {
+                Attack();
+            }
 
-        if (Input.GetKeyDown(KeyCode.Period))
-        {
-            Heavy();
-        }
+            if (Input.GetKeyDown(KeyCode.Period))
+            {
+                Heavy();
+            }
 
-        if (Input.GetKeyDown(KeyCode.Slash))
-        {
-            Block();
+            if (Input.GetKeyDown(KeyCode.Slash))
+            {
+                Block();
+            }
         }
 
         // if (attacking)

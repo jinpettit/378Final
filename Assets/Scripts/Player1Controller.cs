@@ -84,6 +84,7 @@ public class Player1Controller : MonoBehaviour
             {
                 target.GetComponent<Player2Controller>().health -= 20;
                 target.GetComponent<Player2Controller>().animator.SetTrigger("Hit");
+                target.GetComponent<Player2Controller>().MakeActionable();
                 Debug.Log(target.GetComponent<Player2Controller>().health);
                 audioManager.PlaySFX(audioManager.hit);
             }
@@ -207,33 +208,36 @@ public class Player1Controller : MonoBehaviour
             StartCoroutine(HandleDeath());
         }
 
-        if (Input.GetButtonDown("Jump") && isGrounded == true)
-        {
-            animator.SetTrigger("Jump");
-            body.velocity = new Vector2(body.velocity.x, jumpingPower);
-            isGrounded = false;
+        if (!attacking && !blocking){
+            if (Input.GetButtonDown("Jump") && isGrounded == true)
+            {
+                animator.SetTrigger("Jump");
+                body.velocity = new Vector2(body.velocity.x, jumpingPower);
+                isGrounded = false;
+            }
+
+            if (Input.GetButtonUp("Jump"))
+            {
+                body.velocity = new Vector2(body.velocity.x, body.velocity.y * 0.5f);
+
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Attack();
+            }
+
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                Heavy();
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                Block();
+            }
         }
 
-        if (Input.GetButtonUp("Jump"))
-        {
-            body.velocity = new Vector2(body.velocity.x, body.velocity.y * 0.5f);
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Attack();
-        }
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Heavy();
-        }
-
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            Block();
-        }
 
         // if (attacking)
         // { //artificial cooldown for the attack animation
