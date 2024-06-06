@@ -17,8 +17,8 @@ public class Player2Controller : MonoBehaviour
     private bool attacking = false;
     private bool isDead;
 
-    float attackRate = 0.6f;
-    float attackTimer = 0f;
+    //float attackRate = 0.6f;
+    //float attackTimer = 0f;
     public int health = 100;
 
     public bool blocking = false;
@@ -39,21 +39,22 @@ public class Player2Controller : MonoBehaviour
 
     private void Flip()
     {
-        if(isDead)
+        if (isDead)
         {
             return;
         }
 
-        if (GameObject.FindGameObjectWithTag("Player1").GetComponent<Player1Controller>().transform.position.x > transform.position.x && isFacingLeft 
-            || GameObject.FindGameObjectWithTag("Player1").GetComponent<Player1Controller>().transform.position.x < transform.position.x && !isFacingLeft){
-                
+        if (GameObject.FindGameObjectWithTag("Player1").GetComponent<Player1Controller>().transform.position.x > transform.position.x && isFacingLeft
+            || GameObject.FindGameObjectWithTag("Player1").GetComponent<Player1Controller>().transform.position.x < transform.position.x && !isFacingLeft)
+        {
+
             isFacingLeft = !isFacingLeft;
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
         }
-        
-        
+
+
     }
 
 
@@ -70,8 +71,55 @@ public class Player2Controller : MonoBehaviour
         }
         else
         {
-            body.velocity = Vector2.zero;
+            body.velocity = new Vector2(0, body.velocity.y);
         }
+    }
+
+    public void ShowHitbox()
+    {
+        Collider2D[] targets = Physics2D.OverlapBoxAll(hitbox.position, attackSize, 0, opponentLayers);
+        foreach (Collider2D target in targets)
+        {
+            Debug.Log("hit");
+            if (target.GetComponent<Player1Controller>().blocking == false)
+            {
+                target.GetComponent<Player1Controller>().health -= 20;
+                target.GetComponent<Player1Controller>().animator.SetTrigger("Hit");
+                Debug.Log(target.GetComponent<Player1Controller>().health);
+                audioManager.PlaySFX(audioManager.hit);
+            }
+            else
+            {
+                audioManager.PlaySFX(audioManager.contact);
+            }
+        }
+    }
+
+    public void ShowHeavy()
+    {
+        Collider2D[] targets = Physics2D.OverlapBoxAll(hitbox.position, attackSize, 0, opponentLayers);
+        foreach (Collider2D target in targets)
+        {
+            Debug.Log("hit");
+            if (target.GetComponent<Player1Controller>().blocking == false)
+            {
+                target.GetComponent<Player1Controller>().health -= 40;
+                target.GetComponent<Player1Controller>().animator.SetTrigger("Hit");
+                Debug.Log(target.GetComponent<Player1Controller>().health);
+                audioManager.PlaySFX(audioManager.hit);
+            }
+            else
+            {
+                audioManager.PlaySFX(audioManager.contact);
+            }
+
+        }
+    }
+
+    public void MakeActionable()
+    {
+        //attackTimer = 0;
+        attacking = false;
     }
 
     public void Attack()
@@ -85,25 +133,24 @@ public class Player2Controller : MonoBehaviour
             attacking = true;
             animator.SetTrigger("Attack");
             audioManager.PlaySFX(audioManager.swing);
-            Collider2D[] targets = Physics2D.OverlapBoxAll(hitbox.position, attackSize, 0, opponentLayers);
-            foreach (Collider2D target in targets)
-            {
-                Debug.Log("hit");
-                if (target.GetComponent<Player1Controller>().blocking == false)
-                {
-                    target.GetComponent<Player1Controller>().health -= 30;
-                    target.GetComponent<Player1Controller>().animator.SetTrigger("Hit");
-                    Debug.Log(target.GetComponent<Player1Controller>().health);
-                   audioManager.PlaySFX(audioManager.hit);
-                }
-                else
-                {
-                    audioManager.PlaySFX(audioManager.contact);
-                }
-            }
+            // Hitbox trigger now set by animation
         }
-
     }
+
+    public void Heavy()
+    {
+        if (isDead)
+        {
+            return;
+        }
+        if (!attacking)
+        {
+            attacking = true;
+            animator.SetTrigger("Heavy");
+            audioManager.PlaySFX(audioManager.swing);
+        }
+    }
+
 
     public void Block()
     {
@@ -153,44 +200,52 @@ public class Player2Controller : MonoBehaviour
         }
         if (health <= 0)
         {
+            animator.ResetTrigger("Hit");
             animator.Play("Death");
             isDead = true;
             StartCoroutine(HandleDeath());
         }
 
-        if (Input.GetButtonDown("Jump2") && isGrounded == true)
-        { 
-            animator.SetTrigger("Jump");
-            body.velocity = new Vector2(body.velocity.x, jumpingPower);
-            isGrounded = false;
-        }
-
-        if (Input.GetButtonUp("Jump2"))
-        {
-            body.velocity = new Vector2(body.velocity.x, body.velocity.y * 0.5f);
-            
-        }
-
-        if (Input.GetKeyDown(KeyCode.RightShift))
-        {
-            Attack();
-        }
-
-        if (Input.GetKeyDown(KeyCode.RightControl))
-        {
-            Block();
-        }
-
-        if (attacking)
-        { //artificial cooldown for the attack animation
-            attackTimer += Time.deltaTime;
-            if (attackTimer >= attackRate)
+        if (!attacking && !blocking){
+            if (Input.GetButtonDown("Jump2") && isGrounded == true)
             {
-                attackTimer = 0;
-                attacking = false;
+                animator.SetTrigger("Jump");
+                body.velocity = new Vector2(body.velocity.x, jumpingPower);
+                isGrounded = false;
+            }
+
+            if (Input.GetButtonUp("Jump2"))
+            {
+                body.velocity = new Vector2(body.velocity.x, body.velocity.y * 0.5f);
 
             }
+
+            if (Input.GetKeyDown(KeyCode.RightShift))
+            {
+                Attack();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Period))
+            {
+                Heavy();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Slash))
+            {
+                Block();
+            }
         }
+
+        // if (attacking)
+        // { //artificial cooldown for the attack animation
+        //     attackTimer += Time.deltaTime;
+        //     if (attackTimer >= attackRate)
+        //     {
+        //         attackTimer = 0;
+        //         attacking = false;
+
+        //     }
+        // }
 
         if (blocking)
         { //block cooldown
@@ -205,7 +260,7 @@ public class Player2Controller : MonoBehaviour
         Flip();
     }
 
-    
+
 
     void OnDrawGizmosSelected()
     {
