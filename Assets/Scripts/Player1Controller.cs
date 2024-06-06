@@ -101,6 +101,15 @@ public class Player1Controller : MonoBehaviour
 
     public void ShowHitbox()
     {
+        if (isDead || GameObject.FindGameObjectWithTag("Player2") == null)
+        {
+            return;
+        }
+        Player2Controller opponent = GameObject.FindGameObjectWithTag("Player2").GetComponent<Player2Controller>();
+        if (opponent == null || opponent.IsDead())
+        {
+            return;
+        }
         Collider2D[] targets = Physics2D.OverlapBoxAll(hitbox.position, attackSize, 0, opponentLayers);
         foreach (Collider2D target in targets)
         {
@@ -122,6 +131,15 @@ public class Player1Controller : MonoBehaviour
 
     public void ShowHeavy()
     {
+        if (isDead || GameObject.FindGameObjectWithTag("Player2") == null)
+        {
+            return;
+        }
+        Player2Controller opponent = GameObject.FindGameObjectWithTag("Player2").GetComponent<Player2Controller>();
+        if (opponent == null || opponent.IsDead())
+        {
+            return;
+        }
         Collider2D[] targets = Physics2D.OverlapBoxAll(hitbox.position, attackSize, 0, opponentLayers);
         foreach (Collider2D target in targets)
         {
@@ -222,9 +240,9 @@ public class Player1Controller : MonoBehaviour
         }
         if (health <= 0)
         {
+            isDead = true;
             animator.ResetTrigger("Hit");
             animator.SetTrigger("Death");
-            isDead = true;
             StartCoroutine(HandleDeath());
         }
 
@@ -282,6 +300,10 @@ public class Player1Controller : MonoBehaviour
         {
             Flip();
         }
+    }
+    public bool IsDead()
+    {
+        return isDead;
     }
 
     void OnDrawGizmosSelected()
