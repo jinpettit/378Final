@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -37,25 +36,51 @@ public class Player1Controller : MonoBehaviour
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
+    private void OnEnable()
+    {
+        // Register to scene loaded event
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        // Unregister from scene loaded event
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Reset health and other variables
+        health = 100;
+        isDead = false;
+        attacking = false;
+        blocking = false;
+        isFacingRight = true;
+        isGrounded = true;
+    }
+
     private void Flip()
     {
-        if (isDead)
+        if (isDead || GameObject.FindGameObjectWithTag("Player2") == null)
         {
             return;
         }
 
-        if (GameObject.FindGameObjectWithTag("Player2").GetComponent<Player2Controller>().transform.position.x < transform.position.x && isFacingRight
-            || GameObject.FindGameObjectWithTag("Player2").GetComponent<Player2Controller>().transform.position.x > transform.position.x && !isFacingRight)
+        Player2Controller player2Controller = GameObject.FindGameObjectWithTag("Player2").GetComponent<Player2Controller>();
+
+        if (player2Controller != null)
         {
-
-            isFacingRight = !isFacingRight;
-            Vector3 localScale = transform.localScale;
-            localScale.x *= -1f;
-            transform.localScale = localScale;
+            if (player2Controller.transform.position.x < transform.position.x && isFacingRight
+                || player2Controller.transform.position.x > transform.position.x && !isFacingRight)
+            {
+                isFacingRight = !isFacingRight;
+                Vector3 localScale = transform.localScale;
+                localScale.x *= -1f;
+                transform.localScale = localScale;
+            }
         }
-
-
     }
+
 
     public void Move(float move)
     {
@@ -92,7 +117,6 @@ public class Player1Controller : MonoBehaviour
             {
                 audioManager.PlaySFX(audioManager.contact);
             }
-
         }
     }
 
@@ -113,7 +137,6 @@ public class Player1Controller : MonoBehaviour
             {
                 audioManager.PlaySFX(audioManager.contact);
             }
-
         }
     }
 
@@ -135,9 +158,7 @@ public class Player1Controller : MonoBehaviour
             animator.SetTrigger("Attack");
             audioManager.PlaySFX(audioManager.swing);
             // Hitbox trigger now set by the animation
-
         }
-
     }
 
     public void Heavy()
@@ -188,12 +209,11 @@ public class Player1Controller : MonoBehaviour
 
     private IEnumerator HandleDeath()
     {
+        GameManager.instance.Player2WinsRound();
         yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene(2);
         Destroy(gameObject);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (isDead)
@@ -208,7 +228,8 @@ public class Player1Controller : MonoBehaviour
             StartCoroutine(HandleDeath());
         }
 
-        if (!attacking && !blocking){
+        if (!attacking && !blocking)
+        {
             if (Input.GetButtonDown("Jump") && isGrounded == true)
             {
                 animator.SetTrigger("Jump");
@@ -219,7 +240,6 @@ public class Player1Controller : MonoBehaviour
             if (Input.GetButtonUp("Jump"))
             {
                 body.velocity = new Vector2(body.velocity.x, body.velocity.y * 0.5f);
-
             }
 
             if (Input.GetKeyDown(KeyCode.Space))
@@ -238,7 +258,6 @@ public class Player1Controller : MonoBehaviour
             }
         }
 
-
         // if (attacking)
         // { //artificial cooldown for the attack animation
         //     attackTimer += Time.deltaTime;
@@ -246,7 +265,6 @@ public class Player1Controller : MonoBehaviour
         //     {
         //         attackTimer = 0;
         //         attacking = false;
-
         //     }
         // }
 
@@ -260,8 +278,10 @@ public class Player1Controller : MonoBehaviour
             }
         }
 
-        Flip();
-
+        if (!isDead)
+        {
+            Flip();
+        }
     }
 
     void OnDrawGizmosSelected()
