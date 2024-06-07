@@ -1,4 +1,4 @@
-Milestone 3
+Final Milestone
 
 To Do:
 Bug with two players attacking at the same time
