@@ -4321,7 +4321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1733713979}
   animator: {fileID: 1733713973}
-  moveSpeed: 35
+  moveSpeed: 25
 --- !u!114 &1733713979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4864,7 +4864,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1825481157}
   animator: {fileID: 1825481153}
-  moveSpeed: 35
+  moveSpeed: 25
 --- !u!70 &1825481159
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
