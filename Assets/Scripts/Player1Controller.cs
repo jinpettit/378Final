@@ -260,12 +260,12 @@ public class Player1Controller : MonoBehaviour
                 body.velocity = new Vector2(body.velocity.x, body.velocity.y * 0.5f);
             }
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 Attack();
             }
 
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.G))
             {
                 Heavy();
             }

@@ -270,12 +270,12 @@ public class Player2Controller : MonoBehaviour
                 Attack();
             }
 
-            if (Input.GetKeyDown(KeyCode.Period))
+            if (Input.GetKeyDown(KeyCode.Slash))
             {
                 Heavy();
             }
 
-            if (Input.GetKeyDown(KeyCode.Slash))
+            if (Input.GetKeyDown(KeyCode.Period))
             {
                 Block();
             }
