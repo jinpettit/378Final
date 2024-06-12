@@ -23,6 +23,11 @@ public class LoadScene : MonoBehaviour
         SceneManager.LoadScene(2);
     }
 
+    public void Controls()
+    {
+        SceneManager.LoadScene(3);
+    }
+
 
     public void QuitGame()
     {
