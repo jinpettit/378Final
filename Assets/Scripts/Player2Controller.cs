@@ -265,17 +265,17 @@ public class Player2Controller : MonoBehaviour
 
             }
 
-            if (Input.GetKeyDown(KeyCode.RightShift))
+            if (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.Keypad1))
             {
                 Attack();
             }
 
-            if (Input.GetKeyDown(KeyCode.Slash))
+            if (Input.GetKeyDown(KeyCode.Slash) || Input.GetKeyDown(KeyCode.Keypad2))
             {
                 Heavy();
             }
 
-            if (Input.GetKeyDown(KeyCode.Period))
+            if (Input.GetKeyDown(KeyCode.Period) || Input.GetKeyDown(KeyCode.Keypad3))
             {
                 Block();
             }
