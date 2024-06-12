@@ -48,13 +48,18 @@ public class LoadScene : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    public void Controls()
+    {
+        SceneManager.LoadScene(6);
+    }
+
 
     public void QuitGame()
     {
         Application.Quit();
     }
 
-    private IEnumerator LoadLevel(int index) 
+    private IEnumerator LoadLevel(int index)
     {
         transitionAnim.SetTrigger("End");
         audioManager.PlaySFX(audioManager.contact);
